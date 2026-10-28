@@ -107,6 +107,11 @@ def title_block(eyebrow, title, subtitle):
     st.write("")
 
 
+def select_and_order(item_name):
+    st.session_state["selected_food"] = item_name
+    st.session_state["nav_page"] = "Order Food"
+
+
 # ---------- Sidebar ----------
 pages = ["Discover", "Order Food", "Delivery Planner", "Order History"]
 
@@ -173,11 +178,13 @@ if page == "Discover":
                     f'</div>',
                     unsafe_allow_html=True,
                 )
-                if st.button("Order this →", key=f"food_{i}",
-                             use_container_width=True):
-                    st.session_state["selected_food"] = food_name(food)
-                    st.session_state["nav_page"] = "Order Food"
-                    st.rerun()
+                st.button(
+                    "Order this →",
+                    key=f"food_{i}",
+                    use_container_width=True,
+                    on_click=select_and_order,
+                    args=(food_name(food),),
+                )
 
     st.write("")
     left, right = st.columns([1.4, 1])
